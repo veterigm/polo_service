@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090d14">
+<title>VW Polo — ТО</title>
+<style>
+:root{
+ --bg:#090d14;--panel:#111925;--panel2:#151f2e;--line:#243247;
+ --text:#f6f8fc;--muted:#8e9bae;--blue:#70a9ff;--green:#5ddd93;--yellow:#ffc969;--red:#ff727d;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;background:
+ radial-gradient(850px 500px at 70% -10%,rgba(67,128,255,.18),transparent 60%),
+ var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+button,input{font:inherit}
+.wrap{max-width:1080px;margin:auto;padding:18px 18px 42px}
+.hero{
+ border:1px solid #26364e;border-radius:28px;padding:26px;
+ background:linear-gradient(135deg,#142a49,#101722 55%,#10251f);margin-bottom:18px
+}
+.eyebrow{font-size:11px;color:#9bc5ff;font-weight:900;letter-spacing:.15em;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,58px);line-height:1;margin:8px 0 10px;letter-spacing:-.05em}
+.subtitle{color:#9eacbd;font-size:13px;line-height:1.55;max-width:680px}
+.odoRow{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-top:26px;flex-wrap:wrap}
+.odoWrap small{display:block;color:#8f9daf;font-size:11px;margin-bottom:5px}
+.odo{font-size:clamp(48px,9vw,80px);font-weight:950;letter-spacing:-.06em;line-height:.9}
+.odo span{font-size:.27em;color:#8795aa;letter-spacing:0}
+.edit{display:flex;gap:7px}
+.edit input{width:150px;background:#0b131e;color:#fff;border:1px solid #304158;border-radius:12px;padding:11px 12px}
+.edit button{border:0;border-radius:12px;background:var(--blue);color:#06111f;font-weight:900;padding:11px 14px;cursor:pointer}
+
+.sectionTitle{margin:28px 0 12px}
+.sectionTitle h2{margin:0;font-size:23px;letter-spacing:-.03em}
+.sectionTitle p{margin:4px 0 0;color:var(--muted);font-size:12px}
+
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{
+ background:linear-gradient(180deg,#121b28,#0f1722);border:1px solid var(--line);border-radius:22px;padding:19px;
+ position:relative;overflow:hidden
+}
+.card.primary{grid-column:span 2}
+.card:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-45px;top:-50px;background:rgba(255,255,255,.025)}
+.cardTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.nameRow{display:flex;align-items:center;gap:10px}
+.icon{width:42px;height:42px;border-radius:13px;background:#1a2636;display:grid;place-items:center;font-size:22px}
+.name{font-size:15px;font-weight:900}
+.badge{font-size:10px;border-radius:999px;padding:6px 8px;font-weight:900}
+.good{color:var(--green);background:rgba(93,221,147,.1)}
+.warn{color:var(--yellow);background:rgba(255,201,105,.11)}
+.bad{color:var(--red);background:rgba(255,114,125,.11)}
+
+.mainline{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.metric{background:#0e1621;border:1px solid #202e41;border-radius:15px;padding:12px}
+.metric .k{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#7f8da1}
+.metric .v{font-size:20px;font-weight:950;margin-top:5px;letter-spacing:-.03em}
+.metric .s{font-size:10px;color:#758399;margin-top:3px}
+.progress{height:8px;background:#222d3d;border-radius:99px;overflow:hidden;margin-top:15px}
+.progress span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--green),var(--yellow),var(--red))}
+.remain{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:11px;color:#8593a7}
+.remain strong{color:#dfe8f5}
+
+.note{
+ margin-top:14px;background:#0e1620;border:1px solid #223047;border-radius:16px;padding:14px;
+ font-size:12px;color:#9eacbd;line-height:1.55
+}
+
+.future{
+ display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px
+}
+.futureItem{
+ background:#0f1722;border:1px solid #233146;border-radius:15px;padding:11px;text-align:center
+}
+.futureItem .km{font-weight:950;font-size:17px}
+.futureItem .what{color:#8290a4;font-size:10px;margin-top:4px}
+
+details{margin-top:26px;background:#101822;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+summary{cursor:pointer;padding:15px 17px;font-weight:900;list-style:none}
+summary::-webkit-details-marker{display:none}
+.tableWrap{overflow:auto;border-top:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:780px}
+th,td{padding:11px 12px;border-bottom:1px solid #202c3d;text-align:left;font-size:11px;vertical-align:top}
+th{background:#131c28;color:#7f8da1;font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+
+
+
+
+.padGauge{margin-top:12px}
+.padBar{height:12px;background:#253044;border-radius:999px;overflow:hidden;position:relative}
+.padFill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--red) 0 24%,var(--yellow) 24% 52%,var(--green) 52% 100%)}
+.padCurrent{position:absolute;top:-3px;width:3px;height:18px;background:#fff;border-radius:2px;box-shadow:0 0 0 2px rgba(255,255,255,.12)}
+.padLabels{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:#718096}
+.padSummary{display:flex;justify-content:space-between;gap:10px;margin-top:9px;font-size:10px;color:#8290a4}
+.padSummary b{color:#e7eef8}
+
+
+.serviceForm{
+ background:linear-gradient(180deg,#111b28,#0f1722);border:1px solid var(--line);
+ border-radius:22px;padding:18px
+}
+.formGrid{display:grid;grid-template-columns:160px 160px 1fr;gap:10px}
+.field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#75849a;margin-bottom:6px}
+.field input,.field textarea{
+ width:100%;background:#0c141f;color:#f3f7fc;border:1px solid #29384d;border-radius:12px;
+ padding:11px 12px;outline:none
+}
+.field textarea{min-height:74px;resize:vertical}
+.workChecks{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+.workCheck{
+ display:flex;align-items:center;gap:8px;background:#0d151f;border:1px solid #223146;
+ border-radius:12px;padding:10px;font-size:11px;color:#c7d1df;cursor:pointer
+}
+.workCheck input{accent-color:#70a9ff}
+.formActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.formBtn{border:0;border-radius:12px;padding:10px 13px;font-weight:900;cursor:pointer}
+.formBtn.primaryBtn{background:var(--blue);color:#07111f}
+.formBtn.secondaryBtn{background:#172131;color:#d7e0ec;border:1px solid #2a394f}
+.formHint{font-size:10px;color:#718095;line-height:1.5;margin-top:10px}
+.userRecords{display:grid;gap:8px;margin-top:12px}
+.userRecord{
+ display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:start;
+ background:#0d151f;border:1px solid #223146;border-radius:14px;padding:12px
+}
+.userRecord .urKm{font-size:14px;font-weight:950}
+.userRecord .urDate{font-size:9px;color:#77869b;margin-top:2px}
+.userRecord .urText{font-size:11px;color:#cad4e1;line-height:1.45}
+.deleteBtn{border:1px solid rgba(255,114,125,.25);background:rgba(255,114,125,.08);color:#ff9da5;border-radius:10px;padding:7px 9px;cursor:pointer;font-size:10px}
+.toast{
+ position:fixed;right:18px;bottom:18px;background:#142235;border:1px solid #315078;color:#eaf2ff;
+ border-radius:13px;padding:11px 13px;font-size:11px;opacity:0;transform:translateY(10px);
+ pointer-events:none;transition:.22s;box-shadow:0 16px 50px rgba(0,0,0,.35);z-index:50
+}
+.toast.show{opacity:1;transform:none}
+@media(max-width:760px){
+ .formGrid{grid-template-columns:1fr 1fr}.field.noteField{grid-column:1/-1}
+ .workChecks{grid-template-columns:1fr 1fr}.userRecord{grid-template-columns:1fr}.deleteBtn{justify-self:start}
+}
+@media(max-width:520px){
+ .formGrid,.workChecks{grid-template-columns:1fr}.field.noteField{grid-column:auto}
+}
+
+.extraGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.extraCard{background:linear-gradient(180deg,#111a27,#0e1621);border:1px solid var(--line);border-radius:18px;padding:15px}
+.extraTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.extraName{display:flex;align-items:center;gap:9px;font-weight:900;font-size:13px}
+.extraIcon{width:34px;height:34px;border-radius:11px;background:#1a2636;display:grid;place-items:center;font-size:18px}
+.typeBadge{font-size:9px;border:1px solid #2a3a50;border-radius:999px;padding:5px 7px;color:#8fa0b5;white-space:nowrap}
+.extraState{font-size:19px;font-weight:950;margin-top:14px;letter-spacing:-.03em}
+.extraMeta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.extraMeta div{background:#0d151f;border:1px solid #202d3f;border-radius:11px;padding:9px}
+.extraMeta span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#718096}
+.extraMeta b{display:block;margin-top:4px;font-size:11px;color:#dce5f2}
+.extraText{font-size:10px;color:#7f8da1;line-height:1.5;margin-top:10px}
+.attn{color:var(--yellow)}
+.missing{color:var(--red)}
+.oktxt{color:var(--green)}
+@media(max-width:900px){.extraGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.extraGrid{grid-template-columns:1fr}}
+
+.historyTools{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#111925;color:#9dabc0;border-radius:999px;padding:8px 11px;font-size:11px;cursor:pointer}
+.chip.active{background:rgba(112,169,255,.11);border-color:#376094;color:#c7ddff}
+.timeline{display:grid;gap:9px}
+.event{
+ display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:start;
+ background:#101823;border:1px solid var(--line);border-radius:17px;padding:14px
+}
+.eventKm{font-size:17px;font-weight:950}
+.eventDate{font-size:10px;color:#77859a;margin-top:3px}
+.eventDesc{font-size:12px;color:#d5deea;line-height:1.5}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:9px;padding:4px 7px;border-radius:999px;background:#1b2735;color:#90a3bc}
+.tag.oil{color:#bcd9ff;background:rgba(112,169,255,.11)}
+.tag.filter{color:#ffe2a3;background:rgba(255,201,105,.1)}
+.tag.gear{color:#bdf3d2;background:rgba(93,221,147,.09)}
+.tag.ignition{color:#c9f1f8;background:rgba(107,226,239,.09)}
+.tag.brake{color:#ffd0d4;background:rgba(255,114,125,.10)}
+.tag.tire{color:#d6e3f5;background:rgba(145,165,195,.10)}
+.tag.oilfilter,.tag.air,.tag.cabin{color:#ffe2a3;background:rgba(255,201,105,.10)}
+.tag.atf{color:#bdf3d2;background:rgba(93,221,147,.09)}
+.tag.plugs{color:#c9f1f8;background:rgba(107,226,239,.09)}
+.tag.brakefluid,.tag.pads{color:#ffd0d4;background:rgba(255,114,125,.10)}
+.tag.coolant{color:#bdeaff;background:rgba(95,189,255,.10)}
+.tag.tires,.tag.wipers,.tag.other{color:#d7e1ef;background:rgba(145,165,195,.10)}
+.cert{font-size:9px;font-weight:950;border-radius:999px;padding:5px 7px;white-space:nowrap}
+.cert.real{color:var(--green);background:rgba(93,221,147,.09)}
+.cert.estimated{color:var(--yellow);background:rgba(255,201,105,.1)}
+@media(max-width:760px){
+ .event{grid-template-columns:1fr}
+ .cert{justify-self:start}
+}
+
+.footer{padding:20px 2px 0;color:#64738a;font-size:10px;line-height:1.55}
+@media(max-width:760px){
+ .cards{grid-template-columns:1fr}.card.primary{grid-column:span 1}.mainline{grid-template-columns:1fr}
+ .future{grid-template-columns:1fr 1fr}.edit{width:100%}.edit input{flex:1}.hero{padding:20px}
+}
+
+.authShell{
+ max-width:1120px;margin:18px auto 0;padding:0 18px;
+}
+.authCard{
+ display:flex;gap:10px;align-items:end;flex-wrap:wrap;
+ background:#0f1824;border:1px solid #26364a;border-radius:18px;padding:14px;
+ box-shadow:0 12px 40px rgba(0,0,0,.16)
+}
+.authField{min-width:190px;flex:1}
+.authField label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#75849a;margin-bottom:6px}
+.authField input{
+ width:100%;background:#0b131d;color:#f1f6fc;border:1px solid #29384d;border-radius:11px;
+ padding:10px 11px;outline:none
+}
+.authBtn{border:0;border-radius:11px;padding:10px 13px;font-weight:900;cursor:pointer}
+.authBtn.primary{background:#70a9ff;color:#06111e}
+.authBtn.alt{background:#172131;color:#dce5f2;border:1px solid #2b3b50}
+.authStatus{width:100%;font-size:10px;color:#8796aa;line-height:1.45;margin-top:2px}
+.authStatus.ok{color:#77dca0}
+.authStatus.bad{color:#ff9aa3}
+.authUser{display:none;align-items:center;gap:10px;flex-wrap:wrap;width:100%}
+.authUser.show{display:flex}
+.userPill{background:#111f2e;border:1px solid #2b4059;border-radius:999px;padding:8px 11px;font-size:10px;color:#dbe7f5}
+.cloudPill{font-size:9px;border-radius:999px;padding:6px 9px;background:rgba(119,220,160,.09);color:#8be3ae;border:1px solid rgba(119,220,160,.2)}
+body.authLocked .wrap{display:none}
+.cloudHint{font-size:10px;color:#718095;line-height:1.5;margin-top:10px}
+
+
+
+</style>
+</head>
+<body class="authLocked">
+
+<div class="authShell">
+  <div class="authCard" id="authCard">
+    <div id="authGuest" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;width:100%">
+      <div class="authField">
+        <label>Email</label>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com">
+      </div>
+      <div class="authField">
+        <label>Пароль</label>
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="минимум 6 символов">
+      </div>
+      <button class="authBtn primary" onclick="signIn()">Войти</button>
+      <button class="authBtn alt" onclick="signUp()">Регистрация</button>
+    </div>
+
+    <div class="authUser" id="authUser">
+      <span class="userPill" id="authUserEmail">—</span>
+      <span class="cloudPill">☁ Supabase подключён</span>
+      <button class="authBtn alt" onclick="signOut()">Выйти</button>
+    </div>
+
+    <div class="authStatus" id="authStatus">Войди, чтобы открыть сервисную книгу и синхронизировать новые ТО между устройствами.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Volkswagen Polo Liftback · сервис · cloud v10</div>
+  <h1>Что и когда менять</h1>
+  <div class="subtitle">Главное обслуживание на одном экране: последняя замена, твой норматив, следующая замена и остаток по пробегу.</div>
+  <div class="odoRow">
+    <div class="odoWrap">
+      <small>Текущий пробег</small>
+      <div class="odo"><span id="odo">0</span> <span>км</span></div>
+    </div>
+    <div class="edit">
+      <input id="odoInput" type="number" value="0" min="0" step="100">
+      <button onclick="saveOdo()">Обновить</button>
+    </div>
+  </div>
+</header>
+
+<div class="sectionTitle">
+  <h2>Основные расходники</h2>
+  <p>Главные 6 позиций: масло двигателя, масляный фильтр, воздушный и салонный фильтры, масло АКПП и свечи.</p>
+</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="sectionTitle">
+  <h2>Ближайшие точки</h2>
+  <p>Сводка по будущему пробегу.</p>
+</div>
+<div class="future" id="future"></div>
+
+<div class="note">
+  <b>Принятые интервалы:</b> моторное масло и масляный фильтр — каждые <b>8 000 км</b>;
+  воздушный фильтр — каждые <b>16 000 км</b> (примерно через одну замену масла);
+  масло АКПП — ориентир <b>60 000 км</b>;
+  свечи — ориентир <b>30 000 км</b>.
+</div>
+
+
+
+
+<div class="sectionTitle">
+  <h2>Добавить новое ТО</h2>
+  <p>Укажи дату, пробег и выполненные работы. Запись сохранится в Supabase и появится на других твоих устройствах.</p>
+</div>
+
+<div class="serviceForm">
+  <div class="formGrid">
+    <div class="field">
+      <label>Дата</label>
+      <input id="serviceDate" type="date">
+    </div>
+    <div class="field">
+      <label>Пробег, км</label>
+      <input id="serviceKm" type="number" min="0" step="1" placeholder="88000">
+    </div>
+    <div class="field noteField">
+      <label>Комментарий / марка расходника</label>
+      <input id="serviceNote" type="text" placeholder="Например: Motul 8100 X-cess, фильтр Mann">
+    </div>
+  </div>
+
+  <div class="workChecks">
+    <label class="workCheck"><input type="checkbox" value="oil"> 🛢️ Моторное масло</label>
+    <label class="workCheck"><input type="checkbox" value="oilfilter"> 🔩 Масляный фильтр</label>
+    <label class="workCheck"><input type="checkbox" value="air"> 🌬️ Воздушный фильтр</label>
+    <label class="workCheck"><input type="checkbox" value="atf"> ⚙️ Масло АКПП</label>
+    <label class="workCheck"><input type="checkbox" value="plugs"> ⚡ Свечи</label>
+    <label class="workCheck"><input type="checkbox" value="cabin"> 🌫️ Салонный фильтр</label>
+    <label class="workCheck"><input type="checkbox" value="brakefluid"> 🛑 Тормозная жидкость</label>
+    <label class="workCheck"><input type="checkbox" value="coolant"> ❄️ Антифриз / ОЖ</label>
+    <label class="workCheck"><input type="checkbox" value="pads"> 🧱 Передние колодки</label>
+    <label class="workCheck"><input type="checkbox" value="tires"> 🛞 Шины</label>
+    <label class="workCheck"><input type="checkbox" value="wipers"> 🧽 Дворники</label>
+    <label class="workCheck"><input type="checkbox" value="other"> 📝 Другое</label>
+  </div>
+
+  <div class="formActions">
+    <button class="formBtn primaryBtn" onclick="addServiceRecord()">Сохранить ТО</button>
+    <button class="formBtn secondaryBtn" onclick="exportServiceData()">Скачать резервную копию</button>
+    <label class="formBtn secondaryBtn" style="cursor:pointer">
+      Импортировать
+      <input id="importFile" type="file" accept=".json,application/json" style="display:none" onchange="importServiceData(event)">
+    </label>
+  </div>
+
+  <div class="formHint">
+    Новые записи сохраняются в облачной базе Supabase. JSON остаётся как дополнительная резервная копия.
+  </div>
+
+  <div class="userRecords" id="userRecords"></div>
+</div>
+
+<div class="sectionTitle">
+  <h2>Что ещё отслеживать</h2>
+  <p>Не всё имеет фиксированный пробег. Здесь отдельно видно, что считать по километрам, что по времени, а что проверять по состоянию.</p>
+</div>
+
+<div class="extraGrid" id="extraGrid"></div>
+
+<div class="note" style="margin-top:12px">
+  В этом разделе оставлены только те дополнительные позиции, которые действительно полезно вести в твоей книге:
+  тормозная жидкость, антифриз, передние колодки, летние шины и дворники. Салонный фильтр теперь вынесен в основной блок.
+</div>
+
+<div class="sectionTitle" style="display:flex;justify-content:space-between;gap:14px;align-items:end;flex-wrap:wrap">
+  <div>
+    <h2>История обслуживания</h2>
+    <p>Хронология загружается из Supabase после входа. Приблизительные записи отмечены отдельно.</p>
+  </div>
+  <div class="historyTools">
+    <button class="chip active" data-filter="all">Все</button>
+    <button class="chip" data-filter="oil">Масло</button>
+    <button class="chip" data-filter="filter">Фильтры</button>
+    <button class="chip" data-filter="gear">АКПП</button>
+    <button class="chip" data-filter="ignition">Свечи</button>
+  </div>
+</div>
+<div class="timeline" id="timeline"></div>
+
+<details>
+  <summary>История обслуживания ▾</summary>
+  <div class="tableWrap">
+    <table>
+      <thead><tr><th>Дата</th><th>Пробег</th><th>Работы</th><th>Статус</th></tr></thead>
+      <tbody id="history"></tbody>
+    </table>
+  </div>
+</details>
+
+<div class="footer">
+  История обслуживания загружается из приватной базы Supabase после входа в аккаунт.
+  Приблизительные записи отмечаются отдельно.
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://fznxqrdrfpxekhcjojml.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_PdxjzvVCIbtjM0htYoYgdg_3aV4XGMc";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+let currentSession = null;
+let currentVehicle = null;
+let cloudRecords = [];
+let currentOdo = 0;
+
+const items = [
+ {key:"oil", icon:"🛢️", name:"Моторное масло", last:0, interval:8000, norm:"8 000 км", extra:"Motul 8100 X-cess", primary:true},
+ {key:"oilfilter", icon:"🔩", name:"Масляный фильтр", last:0, interval:8000, norm:"8 000 км", extra:"Меняется вместе с маслом"},
+ {key:"air", icon:"🌬️", name:"Воздушный фильтр", last:0, interval:16000, norm:"16 000 км", extra:"Заменён на 76 000 км"},
+ {key:"cabin", icon:"🌫️", name:"Салонный фильтр", last:0, interval:16000, norm:"16 000 км", extra:"Заменён вместе с воздушным фильтром"},
+ {key:"atf", icon:"⚙️", name:"Масло АКПП", last:0, interval:60000, norm:"60 000 км", extra:"На 76 000 км: масло + фильтр + поддон"},
+ {key:"plugs", icon:"⚡", name:"Свечи зажигания", last:0, interval:30000, norm:"30 000 км", extra:"Последняя замена на большом ТО"}
+];
+
+
+
+
+const workLabels = {
+ oil:"Моторное масло", oilfilter:"Масляный фильтр", air:"Воздушный фильтр",
+ atf:"Масло АКПП", plugs:"Свечи зажигания", cabin:"Салонный фильтр",
+ brakefluid:"Тормозная жидкость", coolant:"Антифриз / ОЖ", pads:"Передние колодки",
+ tires:"Шины", wipers:"Дворники", padcheck:"Осмотр передних колодок", other:"Другое"
+};
+
+function getUserRecords(){ return cloudRecords; }
+
+function isoToRu(iso){
+ if(!iso) return "дата не указана";
+ const [y,m,d]=iso.split("-");
+ return `${d}.${m}.${y}`;
+}
+
+function setAuthStatus(text, kind=""){
+ const el=document.getElementById("authStatus");
+ el.textContent=text;
+ el.className="authStatus"+(kind?` ${kind}`:"");
+}
+
+function showToast(text){
+ const t=document.getElementById("toast");
+ t.textContent=text; t.classList.add("show");
+ setTimeout(()=>t.classList.remove("show"),1800);
+}
+
+async function signUp(){
+ const email=document.getElementById("authEmail").value.trim();
+ const password=document.getElementById("authPassword").value;
+ if(!email || password.length<6){ setAuthStatus("Укажи email и пароль минимум из 6 символов.","bad"); return; }
+
+ setAuthStatus("Создаю аккаунт…");
+ const {data,error}=await sb.auth.signUp({
+   email,password,
+   options:{emailRedirectTo:window.location.origin+window.location.pathname}
+ });
+ if(error){ setAuthStatus(error.message,"bad"); return; }
+
+ if(data.session){
+   setAuthStatus("Аккаунт создан, вход выполнен.","ok");
+ }else{
+   setAuthStatus("Аккаунт создан. Проверь почту и подтверди email, затем вернись сюда и войди.","ok");
+ }
+}
+
+async function signIn(){
+ const email=document.getElementById("authEmail").value.trim();
+ const password=document.getElementById("authPassword").value;
+ if(!email || !password){ setAuthStatus("Введи email и пароль.","bad"); return; }
+
+ setAuthStatus("Вхожу…");
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error){ setAuthStatus(error.message,"bad"); return; }
+}
+
+async function signOut(){
+ await sb.auth.signOut();
+}
+
+function applyAuthUI(session){
+ currentSession=session;
+ const guest=document.getElementById("authGuest");
+ const user=document.getElementById("authUser");
+
+ if(session?.user){
+   document.body.classList.remove("authLocked");
+   guest.style.display="none";
+   user.classList.add("show");
+   document.getElementById("authUserEmail").textContent=session.user.email||"Пользователь";
+   setAuthStatus("Данные синхронизируются с Supabase.","ok");
+ }else{
+   document.body.classList.add("authLocked");
+   guest.style.display="flex";
+   user.classList.remove("show");
+   currentVehicle=null;
+   cloudRecords=[];
+   setAuthStatus("Войди, чтобы открыть сервисную книгу и синхронизировать новые ТО между устройствами.");
+ }
+}
+
+async function ensureVehicle(){
+ if(!currentSession?.user) return null;
+
+ let {data,error}=await sb
+   .from("vehicles")
+   .select("id,user_id,name,current_mileage,created_at")
+   .order("created_at",{ascending:true})
+   .limit(1);
+
+ if(error) throw error;
+
+ if(data?.length){
+   currentVehicle=data[0];
+   currentOdo=Number(currentVehicle.current_mileage||0);
+   return currentVehicle;
+ }
+
+ const created=await sb
+   .from("vehicles")
+   .insert({
+     user_id:currentSession.user.id,
+     name:"Volkswagen Polo Liftback",
+     current_mileage:0
+   })
+   .select()
+   .single();
+
+ if(created.error) throw created.error;
+ currentVehicle=created.data;
+ currentOdo=Number(currentVehicle.current_mileage||0);
+ return currentVehicle;
+}
+
+async function loadCloudData(){
+ if(!currentSession?.user) return;
+ try{
+   setAuthStatus("Загружаю сервисную книгу…");
+   await ensureVehicle();
+
+   const {data,error}=await sb
+     .from("service_records")
+     .select("id,service_date,date_label,mileage,works,note,estimated,created_at")
+     .eq("vehicle_id",currentVehicle.id)
+     .order("mileage",{ascending:false});
+
+   if(error) throw error;
+
+   cloudRecords=(data||[]).map(r=>({
+     id:r.id,
+     date:r.service_date,
+     dateLabel:r.date_label||"",
+     km:Number(r.mileage),
+     works:Array.isArray(r.works)?r.works:[],
+     note:r.note||"",
+     estimated:!!r.estimated,
+     createdAt:r.created_at
+   }));
+
+   render();
+   setAuthStatus("Синхронизация с Supabase активна.","ok");
+ }catch(e){
+   console.error(e);
+   setAuthStatus("Ошибка Supabase: "+(e.message||e),"bad");
+ }
+}
+
+async function addServiceRecord(){
+ if(!currentSession?.user || !currentVehicle){ alert("Сначала войди в аккаунт."); return; }
+
+ const date=document.getElementById("serviceDate").value;
+ const km=Number(document.getElementById("serviceKm").value);
+ const note=document.getElementById("serviceNote").value.trim();
+ const works=[...document.querySelectorAll(".workCheck input:checked")].map(x=>x.value);
+
+ if(!date){ alert("Укажи дату ТО."); return; }
+ if(!Number.isFinite(km) || km<=0){ alert("Укажи пробег."); return; }
+ if(!works.length){ alert("Выбери хотя бы одну выполненную работу."); return; }
+
+ const {data,error}=await sb
+   .from("service_records")
+   .insert({
+     user_id:currentSession.user.id,
+     vehicle_id:currentVehicle.id,
+     service_date:date,
+     mileage:km,
+     works,
+     note:note||null
+   })
+   .select()
+   .single();
+
+ if(error){ alert("Не удалось сохранить ТО: "+error.message); return; }
+
+ cloudRecords.push({
+   id:data.id,date:data.service_date,dateLabel:data.date_label||"",km:Number(data.mileage),
+   works:data.works||[],note:data.note||"",estimated:!!data.estimated,createdAt:data.created_at
+ });
+
+ if(km>currentOdo){
+   const upd=await sb
+     .from("vehicles")
+     .update({current_mileage:km})
+     .eq("id",currentVehicle.id);
+   if(!upd.error){
+     currentOdo=km;
+     currentVehicle.current_mileage=km;
+   }
+ }
+
+ document.getElementById("serviceKm").value="";
+ document.getElementById("serviceNote").value="";
+ document.querySelectorAll(".workCheck input").forEach(x=>x.checked=false);
+
+ render();
+ showToast("ТО сохранено в облаке");
+}
+
+async function deleteServiceRecord(id){
+ if(!currentSession?.user) return;
+ if(!confirm("Удалить эту запись ТО?")) return;
+
+ const {error}=await sb
+   .from("service_records")
+   .delete()
+   .eq("id",id);
+
+ if(error){ alert("Не удалось удалить запись: "+error.message); return; }
+
+ cloudRecords=cloudRecords.filter(x=>x.id!==id);
+ render();
+ showToast("Запись удалена");
+}
+
+function latestUserFor(work){
+ return [...getUserRecords()]
+   .filter(r=>r.works.includes(work))
+   .sort((a,b)=>b.km-a.km || String(b.date).localeCompare(String(a.date)))[0] || null;
+}
+
+function exportServiceData(){
+ const payload={
+   version:2,
+   source:"Supabase",
+   exportedAt:new Date().toISOString(),
+   currentMileage:getOdo(),
+   records:getUserRecords()
+ };
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="VW_Polo_service_backup.json";
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+function importServiceData(event){
+ const file=event.target.files?.[0]; if(!file) return;
+ const reader=new FileReader();
+ reader.onload=async()=>{
+   try{
+     if(!currentSession?.user || !currentVehicle) throw new Error("Сначала войди в аккаунт");
+     const data=JSON.parse(reader.result);
+     if(!Array.isArray(data.records)) throw new Error("Неверный формат");
+
+     const rows=data.records.map(r=>({
+       user_id:currentSession.user.id,
+       vehicle_id:currentVehicle.id,
+       service_date:r.date||null,
+       date_label:r.dateLabel||null,
+       mileage:Number(r.km),
+       works:Array.isArray(r.works)?r.works:[],
+       note:r.note||null,
+       estimated:!!r.estimated
+     })).filter(r=>r.service_date && Number.isFinite(r.mileage));
+
+     if(rows.length){
+       const ins=await sb.from("service_records").insert(rows);
+       if(ins.error) throw ins.error;
+     }
+
+     if(Number.isFinite(Number(data.currentMileage))){
+       await sb.from("vehicles").update({current_mileage:Number(data.currentMileage)}).eq("id",currentVehicle.id);
+     }
+
+     await loadCloudData();
+     showToast("Резервная копия загружена");
+   }catch(e){ alert("Не удалось импортировать: "+(e.message||e)); }
+   event.target.value="";
+ };
+ reader.readAsText(file);
+}
+
+function renderUserRecords(){
+ const rows=[...getUserRecords()].sort((a,b)=>b.km-a.km || String(b.date).localeCompare(String(a.date)));
+ document.getElementById("userRecords").innerHTML = rows.length ? rows.map(r=>`
+   <div class="userRecord">
+     <div><div class="urKm">${fmt(r.km)} км</div><div class="urDate">${isoToRu(r.date)}</div></div>
+     <div class="urText"><b>${r.works.map(w=>workLabels[w]||w).join(" · ")}</b>${r.note?`<br>${r.note}`:""}</div>
+     <button class="deleteBtn" onclick="deleteServiceRecord('${r.id}')">Удалить</button>
+   </div>`).join("") :
+   `<div class="formHint">Новых облачных записей ТО пока нет.</div>`;
+}
+
+
+const extraItems = [
+ {icon:"🛑",name:"Тормозная жидкость",type:"по времени",last:"нет записи",next:"каждые 2 года",status:"missing",state:"Нужно уточнить",text:"Если в базе есть подтверждённая замена, она будет показана здесь."},
+ {icon:"❄️",name:"Антифриз / ОЖ",type:"состояние",last:"нет записи",next:"контроль на ТО",status:"attn",state:"Проверить состояние",text:"Отслеживать уровень, состояние жидкости, температуру замерзания и отсутствие течей."},
+ {icon:"🧱",name:"Передние тормозные колодки",type:"остаток / состояние",last:"см. историю",next:"контроль на ТО",status:"attn",state:"Контроль износа",text:"Фактические осмотры и замены загружаются из Supabase."},
+ {icon:"🛞",name:"Летние шины",type:"пробег / состояние",last:"см. историю",next:"контроль каждый сезон",status:"oktxt",state:"Отслеживать комплект",text:"Дата установки и пробег комплекта берутся из истории обслуживания."},
+ {icon:"🧽",name:"Дворники",type:"по состоянию",last:"см. историю",next:"по состоянию",status:"oktxt",state:"Контроль состояния",text:"Фактические замены загружаются из Supabase."}
+];
+
+function renderExtras(){
+ const odo=getOdo();
+ const mapKey={
+   "Тормозная жидкость":"brakefluid",
+   "Антифриз / ОЖ":"coolant",
+   "Передние тормозные колодки":"pads",
+   "Летние шины":"tires",
+   "Дворники":"wipers"
+ };
+
+ document.getElementById("extraGrid").innerHTML=extraItems.map(orig=>{
+   const x={...orig};
+   const key=mapKey[x.name];
+   const user=key ? latestUserFor(key) : null;
+
+   if(user){
+     x.last=`${fmt(user.km)} км · ${isoToRu(user.date)}`;
+     if(key==="cabin"){ x.state="Замена записана"; x.status="oktxt"; x.next=`≈${fmt(user.km+18000)} км`; }
+     if(key==="brakefluid"){ x.state="Замена записана"; x.status="oktxt"; x.next="через 2 года"; }
+     if(key==="coolant"){ x.state="Запись добавлена"; x.status="oktxt"; x.next="контроль на ТО"; }
+     if(key==="pads"){ x.state="Замена колодок записана"; x.status="oktxt"; x.next="контроль износа"; x.pad=false; }
+     if(key==="tires"){ x.state="Комплект установлен"; x.status="oktxt"; x.tire=true; x.tireStart=user.km; }
+     if(key==="wipers"){ x.state="Недавно заменены"; x.status="oktxt"; x.next="по состоянию"; }
+     if(user.note) x.text=user.note;
+   }
+
+   return `<div class="extraCard">
+     <div class="extraTop">
+       <div class="extraName"><div class="extraIcon">${x.icon}</div>${x.name}</div>
+       <div class="typeBadge">${x.type}</div>
+     </div>
+     <div class="extraState ${x.status}">${x.state}</div>
+     <div class="extraMeta">
+       <div><span>Последнее</span><b>${x.last}</b></div>
+       <div><span>Следующий контроль</span><b>${x.next}</b></div>
+     </div>
+     ${x.pad ? `
+       <div class="padGauge">
+         <div class="padBar">
+           <div class="padFill" style="width:100%"></div>
+           <div class="padCurrent" style="left:${Math.max(0,Math.min(100,(x.padNow/x.padNew)*100))}%"></div>
+         </div>
+         <div class="padLabels"><span>0 мм</span><span>предел ≈${x.padMin} мм</span><span>новые ≈${x.padNew} мм</span></div>
+         <div class="padSummary">
+           <span>сейчас: <b>${x.padNow} мм</b></span>
+           <span>до предела: <b>${(x.padNow-x.padMin).toFixed(1)} мм</b></span>
+         </div>
+       </div>` : ""}
+     ${x.tire ? `
+       <div class="padGauge">
+         <div class="padSummary">
+           <span>установлены: <b>${fmt(x.tireStart)} км</b></span>
+           <span>пройдено: <b>${fmt(Math.max(0,odo-x.tireStart))} км</b></span>
+         </div>
+       </div>` : ""}
+     <div class="extraText">${x.text}</div>
+   </div>`;
+ }).join("");
+}
+
+const serviceEvents = [];
+
+const fmt=n=>Math.round(n).toLocaleString("ru-RU");
+const getOdo=()=>Number(currentOdo||0);
+
+function state(left, interval){
+ if(left<=0) return ["bad","Пора"];
+ if(left<=Math.max(1200,interval*.2)) return ["warn","Скоро"];
+ return ["good","В норме"];
+}
+
+function renderCards(){
+ const odo=getOdo();
+ document.getElementById("cards").innerHTML=items.map(x=>{
+   const user=latestUserFor(x.key);
+   const last=user ? user.km : null;
+   const lastDate=user ? (user.date ? isoToRu(user.date) : (user.dateLabel||"дата не указана")) : null;
+   const next=last!==null ? last+x.interval : null;
+   const used=last!==null ? Math.max(0,odo-last) : 0;
+   const left=next!==null ? next-odo : null;
+   const pct=last!==null ? Math.max(0,Math.min(100,used/x.interval*100)) : 0;
+   const [cls,label]=last!==null ? state(left,x.interval) : ["warn","НЕТ ДАННЫХ"];
+   const sourceText=user ? `${lastDate}${user.note?` · ${user.note}`:""}` : "Добавь или импортируй запись";
+   return `<div class="card ${x.primary?"primary":""}">
+     <div class="cardTop">
+       <div class="nameRow"><div class="icon">${x.icon}</div><div class="name">${x.name}</div></div>
+       <div class="badge ${cls}">${label}</div>
+     </div>
+     <div class="mainline">
+       <div class="metric"><div class="k">Последняя замена</div><div class="v">${last!==null?fmt(last)+" км":"нет записи"}</div><div class="s">${sourceText}</div></div>
+       <div class="metric"><div class="k">Норматив</div><div class="v">${x.norm}</div><div class="s">между заменами</div></div>
+       <div class="metric"><div class="k">Следующая замена</div><div class="v">${next!==null?fmt(next)+" км":"—"}</div><div class="s">${left===null?"нужна исходная запись":(left>0?"осталось "+fmt(left)+" км":"перепробег "+fmt(Math.abs(left))+" км")}</div></div>
+     </div>
+     <div class="progress"><span style="width:${pct}%"></span></div>
+     <div class="remain"><span>после замены: <strong>${fmt(used)} км</strong></span><span>ресурс использован: <strong>${Math.round(pct)}%</strong></span></div>
+   </div>`;
+ }).join("");
+}
+
+function renderFuture(){
+ const odo=getOdo();
+ const sorted=items.map(x=>{
+   const user=latestUserFor(x.key);
+   if(!user) return null;
+   const last=user.km;
+   return {...x,lastResolved:last,next:last+x.interval,left:last+x.interval-odo};
+ }).filter(Boolean).sort((a,b)=>a.next-b.next);
+ document.getElementById("future").innerHTML=sorted.map(x=>`
+   <div class="futureItem">
+     <div class="km">${fmt(x.next)} км</div>
+     <div class="what">${x.name}</div>
+   </div>`).join("");
+}
+
+function renderHistory(filter="all"){
+ const labels={oil:"масло",oilfilter:"масляный фильтр",air:"воздушный",atf:"АКПП",plugs:"свечи",cabin:"салонный",brakefluid:"тормозная жидкость",coolant:"антифриз",pads:"колодки",tires:"шины",wipers:"дворники",padcheck:"осмотр колодок",other:"другое",filter:"фильтры",gear:"АКПП",ignition:"свечи",brake:"тормоза",tire:"шины"};
+
+ const userEvents=getUserRecords().map(r=>({
+   date:r.date ? isoToRu(r.date) : (r.dateLabel||"дата не указана"),
+   km:r.km,
+   cats:r.works,
+   desc:r.note || r.works.map(w=>workLabels[w]||w).join("; "),
+   estimated:!!r.estimated,
+   user:true
+ }));
+
+ const all=[...userEvents];
+ const list=[...all].sort((a,b)=>b.km-a.km).filter(e=>{
+   if(filter==="all") return true;
+   if(filter==="oil") return e.cats.some(c=>["oil","oilfilter"].includes(c));
+   if(filter==="filter") return e.cats.some(c=>["filter","oilfilter","air","cabin"].includes(c));
+   if(filter==="gear") return e.cats.some(c=>["gear","atf"].includes(c));
+   if(filter==="ignition") return e.cats.some(c=>["ignition","plugs"].includes(c));
+   return e.cats.includes(filter);
+ });
+
+ document.getElementById("timeline").innerHTML=list.map(e=>`
+   <div class="event">
+     <div>
+       <div class="eventKm">${e.estimated?"≈ ":""}${fmt(e.km)} км</div>
+       <div class="eventDate">${e.date}</div>
+     </div>
+     <div class="eventDesc">
+       ${e.desc}
+       <div class="tags">${e.cats.map(c=>`<span class="tag ${c}">${labels[c]||c}</span>`).join("")}</div>
+     </div>
+     <div class="cert ${e.estimated?"estimated":"real"}">${e.user?"ДОБАВЛЕНО":""
+       ||(e.estimated?"ПРИБЛИЗИТЕЛЬНО":"ПОДТВЕРЖДЕНО")}</div>
+   </div>`).join("");
+
+ document.getElementById("history").innerHTML=[...all].sort((a,b)=>a.km-b.km).map(e=>`
+   <tr>
+     <td>${e.date}</td>
+     <td>${e.estimated?"≈ ":""}${fmt(e.km)} км</td>
+     <td>${e.desc}</td>
+     <td>${e.user?"добавлено вручную":(e.estimated?"приблизительно":"подтверждено")}</td>
+   </tr>`).join("");
+}
+
+async function saveOdo(){
+ if(!currentSession?.user || !currentVehicle){ alert("Сначала войди в аккаунт."); return; }
+ const v=Math.max(0,Number(document.getElementById("odoInput").value||0));
+ const {error}=await sb
+   .from("vehicles")
+   .update({current_mileage:v})
+   .eq("id",currentVehicle.id);
+
+ if(error){ alert("Не удалось обновить пробег: "+error.message); return; }
+ currentOdo=v;
+ currentVehicle.current_mileage=v;
+ render();
+ showToast("Пробег сохранён");
+}
+
+
+document.querySelectorAll(".chip").forEach(btn=>btn.addEventListener("click",()=>{
+ document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+ btn.classList.add("active");
+ renderHistory(btn.dataset.filter);
+}));
+
+function render(){
+ const odo=getOdo();
+ document.getElementById("odo").textContent=fmt(odo);
+ document.getElementById("odoInput").value=odo;
+ renderCards();renderFuture();renderExtras();renderUserRecords();renderHistory(document.querySelector(".chip.active")?.dataset.filter||"all");
+}
+if(!document.getElementById("serviceDate").value){
+  const now=new Date(); const local=new Date(now.getTime()-now.getTimezoneOffset()*60000);
+  document.getElementById("serviceDate").value=local.toISOString().slice(0,10);
+}
+
+async function initAuth(){
+ const {data:{session}}=await sb.auth.getSession();
+ applyAuthUI(session);
+ if(session) await loadCloudData();
+
+ sb.auth.onAuthStateChange((event,session)=>{
+   setTimeout(async()=>{
+     applyAuthUI(session);
+     if(session) await loadCloudData();
+   },0);
+ });
+}
+initAuth();
+</script>
+<div class="toast" id="toast"></div>
+</body>
+</html>
